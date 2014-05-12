@@ -1,18 +1,19 @@
 {
-  "name": "localQuery",
+  "name": "xun",
   "version": "0.0.1",
-  "description": "query api for records-like array",
+  "description": "xun provides basic query functions for records-like array, like underscore.collection",
   "main": "index.js",
   "scripts": {
     "test": "mocha -w"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/bibig/localQuery"
+    "url": "https://github.com/bibig/localquery"
   },
   "keywords": [
     "local",
-    "query"
+    "query",
+    "xun"
   ],
   "devDependencies": {
     "mocha"      : "*",
