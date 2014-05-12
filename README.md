@@ -6,4 +6,18 @@
 npm install xun
 
 ### usage
-to-do
+
+```javascript
+
+  var Xun = require('xun');
+  var xun = Xun.create(records);
+
+  xun.order('created').skip(20).limit(20).select('id', 'name');
+  
+  xun.where('name', '张三').select();
+  
+  xun.where('age', '>', 10).select(['id', 'name', 'age']);
+
+  xun.where('height', '<=', 6).where('age', '>', 15).order('name').select('id, name');
+
+```

@@ -1,13 +1,3 @@
-/**
- * 
- * var Query = require('localQuery');
- * 
- * query = Query.create(records);
- * query.order('created').limit(100).select('id', 'name');
- * query.where('name', '张三').select();
- * query.where('age', '>', 10).select(['id', 'name', 'age']);
- *
- */
 
 exports.create  = create;
 exports.isMatch = isMatch;
@@ -21,7 +11,7 @@ var util = require('util');
  * @return Object
  */
 function create (records) {
-  return new Query(records);
+  return new Xun(records);
 }
 
 function isMatch (hash, options) {
@@ -55,19 +45,19 @@ function isMatch (hash, options) {
 
 //-----------------------begin----------------------------
 //////////////////
-// Query construction //
+// Xun construction //
 //////////////////
 
-function Query (records) {
+function Xun (records) {
   this.records = records;
 }
 
 // 是否有记录存在
-Query.prototype.isEmpty = function () {
+Xun.prototype.isEmpty = function () {
   return this.records.length > 0;
 };
 
-Query.prototype.key = function (name) {
+Xun.prototype.key = function (name) {
   var list = [];
 
   this.records.forEach(function (record) {
@@ -87,7 +77,7 @@ Query.prototype.key = function (name) {
  *  3. select(id, name, age)
  *  4. selelct(['id', 'name', 'age'])
  */
-Query.prototype.select = function (/*fields*/) {
+Xun.prototype.select = function (/*fields*/) {
   var fields = parseSelectArguments.apply(this, arguments);
   
   if (!fields) {
@@ -125,7 +115,7 @@ Query.prototype.select = function (/*fields*/) {
  * @field: 字段名
  * @return this
  */
-Query.prototype.sum = function (field) {
+Xun.prototype.sum = function (field) {
   var s = 0;
 
   this.records.forEach(function (record) {
@@ -138,7 +128,7 @@ Query.prototype.sum = function (field) {
 /**
  * 返回记录数
  */
-Query.prototype.count = function () {
+Xun.prototype.count = function () {
   return this.records.length;
 };
 
@@ -147,7 +137,7 @@ Query.prototype.count = function () {
  * @field: 字段名
  * @return this
  */
-Query.prototype.average = function (field) {
+Xun.prototype.average = function (field) {
   var s = this.sum(field);
 
   return s / this.records.length;
@@ -159,7 +149,7 @@ Query.prototype.average = function (field) {
  * @n: 个数
  * @return this
  */
-Query.prototype.limit = function (n) {
+Xun.prototype.limit = function (n) {
   var list = [];
   var max  = this.records.length;
   
@@ -182,7 +172,7 @@ Query.prototype.limit = function (n) {
  * @return this
  */
 
-Query.prototype.skip = function (n) {
+Xun.prototype.skip = function (n) {
   var list = [];
   var max = this.records.length;
   
@@ -205,7 +195,7 @@ Query.prototype.skip = function (n) {
  * @isDescend: 是否倒序
  * @return this
  */
-Query.prototype.order = function (field, isDescend) {
+Xun.prototype.order = function (field, isDescend) {
 
   if (this.records.length > 0) {
 
@@ -242,7 +232,7 @@ Query.prototype.order = function (field, isDescend) {
  * @field: 要进行比较的字段名
  * @return records 符合要求的记录列表
  */
-Query.prototype.where = function (field/*, operator, value|values*/) {
+Xun.prototype.where = function (field/*, operator, value|values*/) {
   var operator, value;
   var list = [];
   
@@ -277,7 +267,7 @@ Query.prototype.where = function (field/*, operator, value|values*/) {
   return this;
 };
 
-Query.prototype.filter = function (options) {
+Xun.prototype.filter = function (options) {
   var _this = this;
   var keys = Object.keys(options  || {});
   
