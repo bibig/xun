@@ -1,0 +1,26 @@
+{
+  "name": "localQuery",
+  "version": "0.0.1",
+  "description": "query api for records-like array",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha -w"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bibig/localQuery"
+  },
+  "keywords": [
+    "local",
+    "query"
+  ],
+  "devDependencies": {
+    "mocha"      : "*",
+    "should"     : "*"
+  },
+  "author": "bibig@me.com",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/bibig/localQuery/issues"
+  }
+}
