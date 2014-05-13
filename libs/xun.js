@@ -3,6 +3,11 @@ exports.create  = create;
 exports.isMatch = isMatch;
 
 var util = require('util');
+var myna = require('myna')({
+  'x001': 'Invalid <like> value: [%s], only support:[%key, key%, %key%].',
+  'x002': 'Unsupported operator: [%s].',
+  'x003': 'Invalid regex object: [%s].'
+});
 
 
 /**
@@ -65,7 +70,7 @@ Xun.prototype.key = function (name) {
   });
 
   return list;
-}
+};
 
 /**
  * 选择字段
@@ -78,20 +83,8 @@ Xun.prototype.key = function (name) {
  *  4. selelct(['id', 'name', 'age'])
  */
 Xun.prototype.select = function (/*fields*/) {
-  var fields = parseSelectArguments.apply(this, arguments);
-  
-  if (!fields) {
-    return this.records;
-  }
-  
-  if (Array.isArray(fields)) {
-    this.fields = fields;
-    return _select(this.records, fields);
-  } else {
-    return this.records;
-  }
-  
-  function _select (records, fields) {
+  var fields;
+  var selectFn = function (records, fields) {
     var list = [];
 
     records.forEach(function (record) {
@@ -105,6 +98,29 @@ Xun.prototype.select = function (/*fields*/) {
     });
 
     return list;
+  };
+
+  if (arguments.length > 1) {
+    fields = [];
+
+    for (var i = 0; i < arguments.length; i++) {
+      fields.push(arguments[i]);
+    }
+
+  } else if (arguments.length == 1) {
+    fields = arguments[0];
+  }
+  
+  if (typeof fields === 'string') {
+    fields = fields.replace(/[\s]/g, '').split(','); // 支持select('id, name, age');
+  }
+  
+  if ( ! fields ) {
+    return this.records;
+  }
+  
+  if (Array.isArray(fields)) {
+    return selectFn(this.records, fields);
   }
   
   return this.records;
@@ -342,7 +358,7 @@ function compare (fieldValue, operator, value) {
       if (util.isRegExp(value)) {
         return value.test(fieldValue);  
       } else {
-        throw new Error('Invalid regex object: [' + value + '] in query.');
+        throw myna.speak('x003', value);
       }
 
       break;
@@ -365,32 +381,8 @@ function compare (fieldValue, operator, value) {
         return index > -1;
       }
       
-      throw new Error('Invalid query value: [' + value + '] in <like> query, only support:[%key, key%, %key%].');
+      throw myna.speak('x001', value);
     default:
-      throw new Error('Unsupported operator: [' + operator + '] in query.');
+      throw myna.speak('x002', operator);
   }
-}
-
-function parseSelectArguments () {
-  var fields = [];
-
-  if (arguments.length > 1) {
-
-    for (var i = 0; i < arguments.length; i++) {
-      fields.push(arguments[i]);
-    }
-
-  } else if (arguments.length == 1) {
-    fields = arguments[0];
-  } else {
-    // return this.records;
-    return null;
-  }
-  
-  if (typeof fields == 'string') {
-    fields = fields.replace(/[\s]/g, '');
-    fields = fields.split(','); // 支持select('id, name, age');
-  }
-  
-  return fields;
 }

@@ -13,6 +13,7 @@ describe('test Xun object', function () {
   
   it('create object', function () {
     var xun = Xun.create(records);
+    
     assert.ok(typeof xun == 'object');
   });
   
@@ -52,6 +53,7 @@ describe('test Xun object', function () {
   it('test [>] operator', function () {
     var xun = Xun.create(records);
     var results = xun.where('age', '>', 12).select();
+    
     assert.ok(results.length == 1);
   }); 
   
@@ -59,6 +61,7 @@ describe('test Xun object', function () {
   it('test [not in] operator', function () {
     var xun = Xun.create(records);
     var results = xun.where('name', 'not in', ['Tom', 'David']).order('age', 1).select('id', 'name', 'age');
+    
     assert.ok(results[0].name == 'Cici');
   });
   
@@ -85,12 +88,14 @@ describe('test Xun object', function () {
   it('test order ascend', function () {
     var xun = Xun.create(records);
     var results = xun.order('age').select();
+
     assert.ok(results[0].age == 9);
   });
   
   it('test select fields filter', function () {
     var xun = Xun.create(records);
     var results = xun.select('name', 'age');
+
     results[0].should.have.property('name');
     results[0].should.have.property('age');
     results[0].should.not.have.property('id');
@@ -99,6 +104,7 @@ describe('test Xun object', function () {
   it('test limit', function () {
     var xun = Xun.create(records);
     var results = xun.limit(2).select();
+
     assert.ok(results.length == 2);
   });
   
@@ -111,12 +117,14 @@ describe('test Xun object', function () {
   it('test average', function () {
     var xun = Xun.create(records);
     var avg = xun.where('age', '>', 9).average('age');
+
     assert.ok(avg == 13);
   });
   
   it('test like ~%', function () {
     var xun = Xun.create(records);
     var results = xun.where('name', 'like', 'Dav%').select();
+
     assert.ok(results.length == 1);
     results[0].should.have.property('name', 'David');
   });
@@ -124,6 +132,7 @@ describe('test Xun object', function () {
   it('test like %~', function () {
     var xun = Xun.create(records);
     var results = xun.where('name', 'like', '%vid').select();
+
     assert.ok(results.length == 1);
     results[0].should.have.property('name', 'David');
   });
@@ -131,6 +140,7 @@ describe('test Xun object', function () {
   it('test like %~%', function () {
     var xun = Xun.create(records);
     var results = xun.where('name', 'like', '%vi%').select();
+
     assert.ok(results.length == 1);
     results[0].should.have.property('name', 'David');
   });
@@ -138,6 +148,7 @@ describe('test Xun object', function () {
   it('test regex', function () {
     var xun = Xun.create(records);
     var results = xun.where('name', 're', /^\w{3}$/i).select();
+
     assert.ok(results.length == 1);
     results[0].should.have.property('name', 'Tom');
   });
@@ -149,6 +160,7 @@ describe('test Xun object', function () {
       age: ['>=', 9],
       name: ['like', 'To%']
     }).select();
+
     assert.ok(results.length == 1);
     results[0].should.have.property('name', 'Tom');
   });
