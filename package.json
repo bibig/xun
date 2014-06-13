@@ -1,6 +1,6 @@
 {
   "name": "xun",
-  "version": "0.0.3",
+  "version": "0.1.0",
   "description": "xun provides basic query functions for records-like array, like underscore.collection",
   "main": "index.js",
   "scripts": {
@@ -16,7 +16,7 @@
     "xun"
   ],
   "dependencies": {
-    "myna": "^0.0.2"
+    "myna": "^0.1.0"
   },
   "devDependencies": {
     "mocha"      : "*",
